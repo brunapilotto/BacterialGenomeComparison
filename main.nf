@@ -1,3 +1,17 @@
+include { PROKKA } from './modules/nf-core/prokka/main.nf'
+
+include { validateParameters; paramsSummaryLog; samplesheetToList } from 'plugin/nf-schema'
+validateParameters()
+
+log.info """\
+Pipeline Bacterial Genome Comparison
+===================================
+""".stripIndent()
+log.info paramsSummaryLog(workflow)
+
 workflow {
+    parsed_input_csv = Channel.fromList( samplesheetToList( params.metadata, "assets/schema_input.json" ) )
+    metadata_ch = parsed_input_csv.map { sample, fasta  -> tuple ( [ id: sample ], fasta ) }
     
+    prokka_results = PROKKA( metadata_ch, false, false )
 }

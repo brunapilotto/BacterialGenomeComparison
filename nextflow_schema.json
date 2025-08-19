@@ -1,0 +1,51 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Pipeline parameters",
+    "description": "Schema for the pipeline parameters configuration.",
+    "type": "object",
+    "$defs": {
+        "input_output_options": {
+            "title": "Input/output options",
+            "type": "object",
+            "fa_icon": "fas fa-terminal",
+            "description": "Define where the pipeline should find input data and save output data.",
+            "required": [
+                "metadata"
+            ],
+            "properties": {
+                "metadata": {
+                    "type": "string",
+                    "description": "Path to the samplesheet with input samples",
+                    "pattern": "^\\S+\\.csv$",
+                    "format": "file-path"
+                },
+                "outdir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "The output directory where the results will be saved",
+                    "default": "results"
+                },
+                "nextflow_reports": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "The directory where the pipeline reports will be saved",
+                    "default": "pipeline_reports"
+                }
+            }
+        }
+    },
+    "allOf": [
+        {
+            "$ref": "#/$defs/input_output_options"
+        }
+    ],
+    "properties": {
+        "genus": {
+            "type": "string",
+            "description": "Genus of the organism"
+        }
+    },
+    "required": [
+        "genus"
+    ]
+}

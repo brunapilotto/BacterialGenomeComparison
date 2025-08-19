@@ -1,0 +1,25 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "BacterialGenomeComparison pipeline - params.metadata schema",
+    "description": "Schema for the file provided with params.metadata",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "ID": { 
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9\\u00C0-\\u00FF-_–]+$",
+                "errorMessage": "ID must be provided and can only contain letters, numbers, underscores and hyphens"
+            },
+            "FASTA": { 
+                "type": "string",
+                "pattern": "^\\S+\\.(fasta|fasta\\.gz|fa|fa\\.gz)$",
+                "errorMessage": "FASTA must be provided and must have a valid file extension (.fasta, .fasta.gz, .fa, .fa.gz)"
+            }
+        },
+        "required": [
+            "ID",
+            "FASTA"
+        ]
+    }
+}
