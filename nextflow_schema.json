@@ -43,6 +43,17 @@
         "genus": {
             "type": "string",
             "description": "Genus of the organism"
+        },
+        "eggnog_data_dir": {
+            "type": "string",
+            "format": "directory-path",
+            "description": "Directory to save the eggNOG database files",
+            "default": "~/eggnog_data"
+        },
+        "skip_eggnog": {
+            "type": "boolean",
+            "description": "Skip eggNOG annotation step",
+            "default": false
         }
     },
     "required": [

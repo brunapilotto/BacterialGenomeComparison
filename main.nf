@@ -1,4 +1,5 @@
 include { PROKKA } from './modules/nf-core/prokka/main.nf'
+include { EGGNOGMAPPER } from './modules/nf-core/eggnogmapper/main.nf'
 
 include { validateParameters; paramsSummaryLog; samplesheetToList } from 'plugin/nf-schema'
 validateParameters()
@@ -14,4 +15,9 @@ workflow {
     metadata_ch = parsed_input_csv.map { sample, fasta  -> tuple ( [ id: sample ], fasta ) }
     
     prokka_results = PROKKA( metadata_ch, false, false )
+
+    if ( !params.skip_eggnog ) {
+        eggnog_results = EGGNOGMAPPER( prokka_results.faa, false, params.eggnog_data_dir, tuple( [], false ) )
+    }
+    
 }

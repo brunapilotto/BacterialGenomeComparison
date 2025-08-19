@@ -14,6 +14,7 @@
 
 - Using [ABRicate](https://github.com/tseemann/abricate) to mass screening of contigs for antimicrobial resistance or virulence genes.
 - Using [Easyfig](https://mjsull.github.io/Easyfig/) to create linear comparison figures of multiple genomic loci.
+- Usinf [eggNOG-mapper](https://github.com/eggnogdb/eggnog-mapper) to functional annotation through orthology assignment.
 - Using [Pokka](https://github.com/tseemann/prokka) to genome annotation.
 - Fully compatible with **Nextflow** for scalable and reproducible workflows.
 - Support for execution environments using **Docker**.
@@ -39,10 +40,12 @@ nextflow run BacterialGenomeComparison/main.nf \\
 
 | **Parameter**             | **Description**                                         | **Required?**                      |
 | --------------------------| --------------------------------------------------------|------------------------------------|
+| `--eggnog_data_dir`       | Path to store eggNOG-mapper databases                   | No (default: `~/eggnog_data`)      |
 | `genus`                   | Genus of the organism                                   | Yes                                |
 | `--metadata`              | Path to the samplesheet with input samples              | Yes                                |
 | `--outdir`                | The output directory where the results will be saved    | No (default: `./results`)          |
 | `--nextflow_reports`      | Path to the folder that will store the pipeline reports | No (default: `./pipeline_reports`) |
+| `--skip_eggnog            | Skip Eggnog step                                        | No (default: `false`)              |
 
 If you want to know all the pipeline parameters, you can run the command:
 
