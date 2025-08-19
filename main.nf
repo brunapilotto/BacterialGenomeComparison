@@ -1,5 +1,6 @@
 include { PROKKA } from './modules/nf-core/prokka/main.nf'
 include { EGGNOGMAPPER } from './modules/nf-core/eggnogmapper/main.nf'
+include { PANAROO_RUN } from './modules/nf-core/panaroo/run/main.nf'
 
 include { validateParameters; paramsSummaryLog; samplesheetToList } from 'plugin/nf-schema'
 validateParameters()
@@ -19,5 +20,7 @@ workflow {
     if ( !params.skip_eggnog ) {
         eggnog_results = EGGNOGMAPPER( prokka_results.faa, false, params.eggnog_data_dir, tuple( [], false ) )
     }
+
+    panaroo_results = PANAROO_RUN( prokka_results.gff )
     
 }
