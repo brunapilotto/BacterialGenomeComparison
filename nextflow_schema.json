@@ -54,6 +54,12 @@
             "type": "boolean",
             "description": "Skip eggNOG annotation step",
             "default": false
+        },
+        "anaconda_base": {
+            "type": "string",
+            "format": "directory-path",
+            "description": "Base directory for Anaconda environment",
+            "default": "/opt/anaconda3"
         }
     },
     "required": [
