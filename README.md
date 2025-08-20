@@ -16,6 +16,7 @@
 - Using [ABRicate](https://github.com/tseemann/abricate) to mass screening of contigs for antimicrobial resistance or virulence genes.
 - Using [Easyfig](https://mjsull.github.io/Easyfig/) to create linear comparison figures of multiple genomic loci.
 - Using [eggNOG-mapper](https://github.com/eggnogdb/eggnog-mapper) to functional annotation through orthology assignment.
+- Using [Gubbins](https://github.com/nickjcroucher/gubbins) for detection of recombination in the alignment. 
 - Using [panaroo](https://github.com/gtonkinhill/panaroo) to pangenome investigation.
 - Using [Pokka](https://github.com/tseemann/prokka) to genome annotation.
 - Fully compatible with **Nextflow** for scalable and reproducible workflows.

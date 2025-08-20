@@ -2,6 +2,7 @@ include { PROKKA } from './modules/nf-core/prokka/main.nf'
 include { EGGNOGMAPPER } from './modules/nf-core/eggnogmapper/main.nf'
 include { PANAROO_RUN } from './modules/nf-core/panaroo/run/main.nf'
 include { PLOTS_PANAROO } from './modules/local/plots/panaroo/main.nf'
+include { GUBBINS } from './modules/nf-core/gubbins/main.nf'
 
 include { validateParameters; paramsSummaryLog; samplesheetToList } from 'plugin/nf-schema'
 validateParameters()
@@ -34,4 +35,8 @@ workflow {
                         .map { meta, results -> tuple( meta, file("${results}/gene_presence_absence.Rtab") ) },
                     params.plots_metadata
                 )
+
+    gubbins_results = GUBBINS( 
+                        panaroo_results.aln.map { _meta, geneAlignment -> geneAlignment }
+                    )
 }
