@@ -60,9 +60,16 @@
             "format": "directory-path",
             "description": "Base directory for Anaconda environment",
             "default": "/opt/anaconda3"
+        },
+        "plots_metadata": {
+            "type": "string",
+            "description": "Path to the metadata file for plotting",
+            "pattern": "^\\S+\\.tsv$",
+            "format": "file-path"
         }
     },
     "required": [
-        "genus"
+        "genus",
+        "plots_metadata"
     ]
 }

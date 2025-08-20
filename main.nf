@@ -31,6 +31,7 @@ workflow {
                          )
     panaroo_plot = PLOTS_PANAROO( 
                     panaroo_results.results
-                        .map { meta, results -> tuple( meta, file("${results}/gene_presence_absence.Rtab") ) }
+                        .map { meta, results -> tuple( meta, file("${results}/gene_presence_absence.Rtab") ) },
+                    params.plots_metadata
                 )
 }

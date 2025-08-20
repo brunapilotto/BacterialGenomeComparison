@@ -53,10 +53,11 @@ nextflow run BacterialGenomeComparison/main.nf \\
 | --------------------------| --------------------------------------------------------|------------------------------------|
 | `anaconda_base`           | Path to Conda base env                                  | No (default: `/opt/anaconda3`)     |
 | `--eggnog_data_dir`       | Path to store eggNOG-mapper databases                   | No (default: `~/eggnog_data`)      |
-| `genus`                   | Genus of the organism                                   | Yes                                |
+| `--genus`                 | Genus of the organism                                   | Yes                                |
 | `--metadata`              | Path to the samplesheet with input samples              | Yes                                |
-| `--outdir`                | The output directory where the results will be saved    | No (default: `./results`)          |
 | `--nextflow_reports`      | Path to the folder that will store the pipeline reports | No (default: `./pipeline_reports`) |
+| `--outdir`                | The output directory where the results will be saved    | No (default: `./results`)          |
+| `--plots_metadata`        | Path to the tsv metadata file for panaroo plotting      | Yes                                |
 | `--skip_eggnog`           | Skip Eggnog step                                        | No (default: `false`)              |
 
 If you want to know all the pipeline parameters, you can run the command:

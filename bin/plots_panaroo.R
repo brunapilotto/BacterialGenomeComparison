@@ -4,9 +4,11 @@ library(micropan)
 library(vegan)
 library(limma)
 library(pheatmap)
+library(ggplot2)
 
 args <- commandArgs(trailingOnly = TRUE)
 genePresenceAbsence <- args[1]
+metadata <- args[2]
 
 data <- read.table(genePresenceAbsence, sep = "\t", row.names = 1, header = TRUE, check.names = FALSE)
 
@@ -62,4 +64,15 @@ reorder <- reorder[,hm$tree_row[["order"]]]
 pheatmap(t(reorder[5816:5890,]), show_colnames = T,
       cluster_cols = F, cluster_rows = F, legend = F,
       color = c("white", "skyblue4"))
+dev.off()
+
+meta <- read.table(metadata, header = TRUE, sep = "\t", row.names = 1)
+dafr <- data.frame(merge(df_t, meta, by = 0))
+PC<-prcomp(dafr[, c(4211:5979)])
+PCi<-data.frame(PC$x, Host=dafr$Host)
+png(filename = "PCA_plot_panaroo.png", width = 6, height = 4, units = "in", res = 300)
+ggplot(PCi, aes(x=PC1,y=PC2,fill=Host)) +
+  geom_point(size = 5, alpha = 0.5, shape = 21) +
+  scale_fill_brewer(palette = "Set1") +
+  theme_bw()
 dev.off()

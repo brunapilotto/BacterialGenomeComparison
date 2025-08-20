@@ -6,6 +6,7 @@ process PLOTS_PANAROO {
 
     input:
         tuple val(meta), path(gene_presence_absence)
+        path(metadata)
 
     output:
         tuple val(meta), path("*png"), emit: plots
@@ -13,7 +14,7 @@ process PLOTS_PANAROO {
 
     script:
         """
-        plots_panaroo.R ${gene_presence_absence}
+        plots_panaroo.R ${gene_presence_absence} ${metadata}
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -28,6 +29,7 @@ process PLOTS_PANAROO {
             rarefaction_curve_panaroo.png \\
             venn_diagram_panaroo.png \\
             heatmap_panaroo.png \\
+            PCA_plot_panaroo.png \\
             versions.yml
         """
 }
