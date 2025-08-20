@@ -2,11 +2,12 @@
 
 library(micropan)
 library(vegan)
+library(limma)
 
 args <- commandArgs(trailingOnly = TRUE)
 genePresenceAbsence <- args[1]
 
-data <- read.table("~/Downloads/paranoo.Rtab", sep = "\t", row.names = 1, header = TRUE, check.names = FALSE)
+data <- read.table(genePresenceAbsence, sep = "\t", row.names = 1, header = TRUE, check.names = FALSE)
 
 pangenome_size = nrow(data)
 core_size <- length(rowSums(data)[rowSums(data) > 0.99*ncol(data)])
@@ -40,4 +41,9 @@ plot(rf, ci.type = "poly", col = "darkblue", lwd = 2, ci.lty = 0, ci.col = "ligh
            ylab = "Number of gene families",
            ylim = c(4000, 6000))
 legend(x = "bottomright", legend = paste("\u03B1 =", round(heap[2], 2)), fill = "blue")
+dev.off()
+
+counts <- vennCounts(data[6:9])
+png(filename = "venn_diagram_panaroo.png", width = 6, height = 4, units = "in", res = 300)
+vennDiagram(counts, circle.col = c("red", "blue", "green3", "yellow"), cex = 1)
 dev.off()
