@@ -1,5 +1,8 @@
 #!/usr/bin/env Rscript
 
+library(micropan)
+library(vegan)
+
 args <- commandArgs(trailingOnly = TRUE)
 genePresenceAbsence <- args[1]
 
@@ -23,4 +26,18 @@ hist(rowSums(data), xlab = "Number of genomes containing a gene",
      ylab = "Number of genes", main = "Gene frequency",
      ylim = c(0,5000), xlim = c(0,ncol(data)+1),
      breaks = seq(min(rowSums(data))-0.5, max(rowSums(data))+0.5, by = 1))
+dev.off()
+
+df_t <- t(data)
+rownames(df_t) <- colnames(data)
+colnames(df_t) <- rownames(data)
+
+heap <- heaps(df_t, n.perm = 1000)
+rf <- specaccum(df_t, "random", permutations = 1000)
+png(filename = "rarefaction_curve_panaroo.png", width = 6, height = 4, units = "in", res = 300)
+plot(rf, ci.type = "poly", col = "darkblue", lwd = 2, ci.lty = 0, ci.col = "lightblue3",
+           xlab = "Number of genomes",
+           ylab = "Number of gene families",
+           ylim = c(4000, 6000))
+legend(x = "bottomright", legend = paste("\u03B1 =", round(heap[2], 2)), fill = "blue")
 dev.off()

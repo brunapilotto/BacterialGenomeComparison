@@ -1,7 +1,7 @@
 process PLOTS_PANAROO {
     debug params.debug
     tag "${meta.client_name}:${meta.id}:${meta.marker}"
-    conda 'conda-forge::r-base=4.5.1'
+    conda 'conda-forge::r-base=4.5.1 conda-forge::r-micropan=2.1 conda-forge::r-vegan=2.5_4'
     container 'docker.io/r-base:4.5.1'
 
     input:
@@ -25,6 +25,7 @@ process PLOTS_PANAROO {
         """
         touch hist_plot_panaroo.png \\
             pie_plot_panaroo.png \\
+            rarefaction_curve_panaroo.png \\
             versions.yml
         """
 }
