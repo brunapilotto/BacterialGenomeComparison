@@ -3,6 +3,7 @@
 library(micropan)
 library(vegan)
 library(limma)
+library(pheatmap)
 
 args <- commandArgs(trailingOnly = TRUE)
 genePresenceAbsence <- args[1]
@@ -46,4 +47,19 @@ dev.off()
 counts <- vennCounts(data[6:9])
 png(filename = "venn_diagram_panaroo.png", width = 6, height = 4, units = "in", res = 300)
 vennDiagram(counts, circle.col = c("red", "blue", "green3", "yellow"), cex = 1)
+dev.off()
+
+pange <- as.matrix(df_t, as.numeric)
+rownames(pange) <- colnames(data)
+
+png(filename = "heatmap_panaroo.png", width = 6, height = 4, units = "in", res = 300)
+hm <- pheatmap(pange, clustering_distance_rows = "manhattan",
+            clustering_method = "ward.D", color = c("white", "skyblue4"),
+            clustering_distance_cols = "manhattan", show_colnames = F,
+            cluster_cols = T, cluster_rows = T, legend = F)
+reorder <- data[hm$tree_col[["order"]],]
+reorder <- reorder[,hm$tree_row[["order"]]]
+pheatmap(t(reorder[5816:5890,]), show_colnames = T,
+      cluster_cols = F, cluster_rows = F, legend = F,
+      color = c("white", "skyblue4"))
 dev.off()

@@ -27,6 +27,7 @@ process PLOTS_PANAROO {
             pie_plot_panaroo.png \\
             rarefaction_curve_panaroo.png \\
             venn_diagram_panaroo.png \\
+            heatmap_panaroo.png \\
             versions.yml
         """
 }
