@@ -19,7 +19,7 @@ workflow {
     parsed_input_csv = Channel.fromList( samplesheetToList( params.metadata, "assets/schema_input.json" ) )
     metadata_ch = parsed_input_csv.map { sample, fasta  -> tuple ( [ id: sample, genus: params.genus ], fasta ) }
     
-    prokka_results = PROKKA( metadata_ch, false, false )
+    prokka_results = PROKKA( metadata_ch, [], [] )
 
     if ( !params.skip_eggnog ) {
         eggnog_results = EGGNOGMAPPER( prokka_results.faa, false, params.eggnog_data_dir, tuple( [], false ) )
@@ -28,7 +28,7 @@ workflow {
     panaroo_results = PANAROO_RUN( 
                         prokka_results.gff
                             .map{ meta, gff -> 
-                                    def newMeta = meta - meta.submap(["id"])
+                                    def newMeta = meta - meta.subMap(["id"])
                                     tuple(newMeta, gff)
                             }.groupTuple()
                          )
@@ -43,18 +43,18 @@ workflow {
                     )
     clean_aln = SNPSITES( gubbins_results.fasta )
     tree = IQTREE(
-            clean_aln.fasta.map{ aln -> tuple([], aln, false)},
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
+            clean_aln.fasta.map{ aln -> tuple([], aln, [])},
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            []
     )
 }
