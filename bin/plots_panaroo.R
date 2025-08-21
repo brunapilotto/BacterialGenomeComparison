@@ -46,7 +46,7 @@ plot(rf, ci.type = "poly", col = "darkblue", lwd = 2, ci.lty = 0, ci.col = "ligh
 legend(x = "bottomright", legend = paste("\u03B1 =", round(heap[2], 2)), fill = "blue")
 dev.off()
 
-counts <- vennCounts(data[6:9])
+counts <- vennCounts(data[2:5])
 png(filename = "venn_diagram_panaroo.png", width = 6, height = 4, units = "in", res = 300)
 vennDiagram(counts, circle.col = c("red", "blue", "green3", "yellow"), cex = 1)
 dev.off()
@@ -61,15 +61,18 @@ hm <- pheatmap(pange, clustering_distance_rows = "manhattan",
             cluster_cols = T, cluster_rows = T, legend = F)
 reorder <- data[hm$tree_col[["order"]],]
 reorder <- reorder[,hm$tree_row[["order"]]]
-pheatmap(t(reorder[5816:5890,]), show_colnames = T,
+pheatmap(t(reorder[1:85,]), show_colnames = T,
       cluster_cols = F, cluster_rows = F, legend = F,
       color = c("white", "skyblue4"))
 dev.off()
 
 meta <- read.table(metadata, header = TRUE, sep = "\t", row.names = 1)
 dafr <- data.frame(merge(df_t, meta, by = 0))
-PC<-prcomp(dafr[, c(4211:5979)])
-PCi<-data.frame(PC$x, Host=dafr$Host)
+numericCols <- sapply(dafr, is.numeric)
+numericData <- dafr[, numericCols]
+numericData <- numericData[, apply(numericData, 2, function(x) var(x) != 0)]
+PC <- prcomp(numericData, scale. = TRUE)
+PCi <- data.frame(PC$x, Host = dafr$Host)
 png(filename = "PCA_plot_panaroo.png", width = 6, height = 4, units = "in", res = 300)
 ggplot(PCi, aes(x=PC1,y=PC2,fill=Host)) +
   geom_point(size = 5, alpha = 0.5, shape = 21) +
