@@ -5,6 +5,7 @@ include { PLOTS_PANAROO } from './modules/local/plots/panaroo/main.nf'
 include { GUBBINS } from './modules/nf-core/gubbins/main.nf'
 include { SNPSITES } from './modules/nf-core/snpsites/main.nf'
 include { IQTREE } from './modules/nf-core/iqtree/main.nf'
+include { PLOTS_TREE } from './modules/local/plots/tree/main.nf'
 
 include { validateParameters; paramsSummaryLog; samplesheetToList } from 'plugin/nf-schema'
 validateParameters()
@@ -59,4 +60,8 @@ workflow {
             [],
             []
     )
+    tree_plot = PLOTS_TREE(
+                    tree.phylogeny,
+                    Channel.fromPath( params.plots_metadata )
+                )
 }

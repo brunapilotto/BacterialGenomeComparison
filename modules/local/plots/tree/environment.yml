@@ -1,0 +1,9 @@
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - r-base=4.4.0
+  - bioconda::bioconductor-ggtree=3.14.0
+  - r-ggplot2=3.5.2
+  - r-phangorn=2.12.1
