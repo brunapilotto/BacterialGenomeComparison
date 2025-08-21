@@ -2,7 +2,7 @@ process PLOTS_PANAROO {
     debug params.debug
     tag "${meta.client_name}:${meta.id}:${meta.marker}"
     conda "${moduleDir}/environment.yml"
-    container 'docker.io/r-base:4.5.1'
+    container 'docker.io/r-base:4.5.1'ˇ
 
     input:
         tuple val(meta), path(gene_presence_absence)
