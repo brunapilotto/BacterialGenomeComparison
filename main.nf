@@ -34,8 +34,10 @@ workflow {
                          )
     panaroo_plot = PLOTS_PANAROO( 
                     panaroo_results.results
-                        .map { meta, results -> tuple( meta, file("${results}/gene_presence_absence.Rtab") ) },
-                    params.plots_metadata
+                        .map { meta, results -> 
+                                def resultsDir = file(results[0]).getParent()
+                                tuple( meta, file("${resultsDir}/gene_presence_absence.Rtab") ) },
+                    Channel.fromPath( params.plots_metadata )
                 )
 
     gubbins_results = GUBBINS( 
