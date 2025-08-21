@@ -1,6 +1,5 @@
 process PLOTS_PANAROO {
-    debug params.debug
-    tag "${meta.client_name}:${meta.id}:${meta.marker}"
+    tag "${params.genus}"
     conda "${moduleDir}/environment.yml"
 
     input:
