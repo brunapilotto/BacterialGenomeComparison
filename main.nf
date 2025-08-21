@@ -3,6 +3,7 @@ include { EGGNOGMAPPER } from './modules/nf-core/eggnogmapper/main.nf'
 include { PANAROO_RUN } from './modules/nf-core/panaroo/run/main.nf'
 include { PLOTS_PANAROO } from './modules/local/plots/panaroo/main.nf'
 include { GUBBINS } from './modules/nf-core/gubbins/main.nf'
+include { SNPSITES } from './modules/nf-core/snpsites/main.nf'
 
 include { validateParameters; paramsSummaryLog; samplesheetToList } from 'plugin/nf-schema'
 validateParameters()
@@ -39,4 +40,6 @@ workflow {
     gubbins_results = GUBBINS( 
                         panaroo_results.aln.map { _meta, geneAlignment -> geneAlignment }
                     )
+
+    clean_aln = SNPSITES( gubbins_results.fasta )
 }
