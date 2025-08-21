@@ -4,6 +4,7 @@ include { PANAROO_RUN } from './modules/nf-core/panaroo/run/main.nf'
 include { PLOTS_PANAROO } from './modules/local/plots/panaroo/main.nf'
 include { GUBBINS } from './modules/nf-core/gubbins/main.nf'
 include { SNPSITES } from './modules/nf-core/snpsites/main.nf'
+include { IQTREE } from './modules/nf-core/iqtree/main.nf'
 
 include { validateParameters; paramsSummaryLog; samplesheetToList } from 'plugin/nf-schema'
 validateParameters()
@@ -40,6 +41,20 @@ workflow {
     gubbins_results = GUBBINS( 
                         panaroo_results.aln.map { _meta, geneAlignment -> geneAlignment }
                     )
-
     clean_aln = SNPSITES( gubbins_results.fasta )
+    tree = IQTREE(
+            clean_aln.fasta.map{ aln -> tuple([], aln, false)},
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+    )
 }

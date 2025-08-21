@@ -17,6 +17,7 @@
 - Using [Easyfig](https://mjsull.github.io/Easyfig/) to create linear comparison figures of multiple genomic loci.
 - Using [eggNOG-mapper](https://github.com/eggnogdb/eggnog-mapper) to functional annotation through orthology assignment.
 - Using [Gubbins](https://github.com/nickjcroucher/gubbins) for detection of recombination in the alignment.
+- Using [IQ-TREE](https://iqtree.github.io/) for phylogenomic inference.
 - Using [panaroo](https://github.com/gtonkinhill/panaroo) to pangenome investigation.
 - Using [SNP-sites](https://sanger-pathogens.github.io/snp-sites/) to extract SNPs from a multi-FASTA alignment.
 - Using [Pokka](https://github.com/tseemann/prokka) to genome annotation.
