@@ -1,11 +1,8 @@
 include { PROKKA } from './modules/nf-core/prokka/main.nf'
 include { EGGNOGMAPPER } from './modules/nf-core/eggnogmapper/main.nf'
-include { GUBBINS } from './modules/nf-core/gubbins/main.nf'
-include { SNPSITES } from './modules/nf-core/snpsites/main.nf'
-include { IQTREE } from './modules/nf-core/iqtree/main.nf'
-include { PLOTS_TREE } from './modules/local/plots/tree/main.nf'
 
 include { PANGENOME } from './subworkflows/local/pangenome/main.nf'
+include { PHYLOGENETIC_TREE } from './subworkflows/local/phylogenetic_tree/main.nf'
 
 include { validateParameters; paramsSummaryLog; samplesheetToList } from 'plugin/nf-schema'
 validateParameters()
@@ -38,27 +35,8 @@ workflow {
         params.outdir
     )
 
-    gubbins_results = GUBBINS( 
-                        pangenome_results.panaroo_aln.map { _meta, geneAlignment -> geneAlignment }
-                    )
-    clean_aln = SNPSITES( gubbins_results.fasta )
-    tree = IQTREE(
-            clean_aln.fasta.map{ aln -> tuple([], aln, [])},
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            []
+    PHYLOGENETIC_TREE(
+        pangenome_results.panaroo_aln,
+        Channel.fromPath( params.plots_metadata )
     )
-    tree_plot = PLOTS_TREE(
-                    tree.phylogeny,
-                    Channel.fromPath( params.plots_metadata )
-                )
 }
