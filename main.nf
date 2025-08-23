@@ -6,6 +6,7 @@ include { GUBBINS } from './modules/nf-core/gubbins/main.nf'
 include { SNPSITES } from './modules/nf-core/snpsites/main.nf'
 include { IQTREE } from './modules/nf-core/iqtree/main.nf'
 include { PLOTS_TREE } from './modules/local/plots/tree/main.nf'
+include { PPANGGOLIN } from './modules/local/ppanggolin/main.nf'
 
 include { validateParameters; paramsSummaryLog; samplesheetToList } from 'plugin/nf-schema'
 validateParameters()
@@ -21,18 +22,17 @@ workflow {
     metadata_ch = parsed_input_csv.map { sample, fasta  -> tuple ( [ id: sample, genus: params.genus ], fasta ) }
     
     prokka_results = PROKKA( metadata_ch, [], [] )
+    all_gffs = prokka_results.gff
+                .map{ meta, gff -> 
+                        def newMeta = meta - meta.subMap(["id"])
+                        tuple(newMeta, gff)
+                }.groupTuple()
 
     if ( !params.skip_eggnog ) {
         eggnog_results = EGGNOGMAPPER( prokka_results.faa, false, params.eggnog_data_dir, tuple( [], false ) )
     }
 
-    panaroo_results = PANAROO_RUN( 
-                        prokka_results.gff
-                            .map{ meta, gff -> 
-                                    def newMeta = meta - meta.subMap(["id"])
-                                    tuple(newMeta, gff)
-                            }.groupTuple()
-                         )
+    panaroo_results = PANAROO_RUN( all_gffs )
     panaroo_plot = PLOTS_PANAROO( 
                     panaroo_results.results
                         .map { meta, results -> 
@@ -64,4 +64,15 @@ workflow {
                     tree.phylogeny,
                     Channel.fromPath( params.plots_metadata )
                 )
+
+    samples = parsed_input_csv.map { sample, _fasta  -> sample }.collect()
+    new File( params.outdir, "PPanGGOLiN" ).mkdirs()
+    new File( params.outdir, "PPanGGOLiN", "prokka.gff.tab" ).text = samples.each { sample ->
+        "${sample}\t${params.outdir}/Prokka/${sample}/${sample}.gff"
+    }.join("\n")
+
+    ppanggolin_results = PPANGGOLIN(
+                            all_gffs,
+                            Channel.fromPath( "${params.outdir}/PPanGGOLiN/prokka.gff.tab", checkIfExists: true ),
+                        )
 }
