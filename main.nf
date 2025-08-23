@@ -1,8 +1,4 @@
-include { PROKKA } from './modules/nf-core/prokka/main.nf'
-include { EGGNOGMAPPER } from './modules/nf-core/eggnogmapper/main.nf'
-include { ABRICATE_RUN } from './modules/nf-core/abricate/run/main.nf'
-include { ABRICATE_SUMMARY } from './modules/nf-core/abricate/summary/main.nf'
-
+include { ANNOTATION } from './subworkflows/local/annotation/main.nf'
 include { PANGENOME } from './subworkflows/local/pangenome/main.nf'
 include { PHYLOGENETIC_TREE } from './subworkflows/local/phylogenetic_tree/main.nf'
 
@@ -19,20 +15,11 @@ workflow {
     parsed_input_csv = Channel.fromList( samplesheetToList( params.metadata, "assets/schema_input.json" ) )
     metadata_ch = parsed_input_csv.map { sample, fasta  -> tuple ( [ id: sample, genus: params.genus ], fasta ) }
     
-    prokka_results = PROKKA( metadata_ch, [], [] )
-    all_gffs = prokka_results.gff
-                .map{ meta, gff -> 
-                        def newMeta = meta - meta.subMap(["id"])
-                        tuple(newMeta, gff)
-                }.groupTuple()
-
-    if ( !params.skip_eggnog ) {
-        eggnog_results = EGGNOGMAPPER( prokka_results.faa, false, params.eggnog_data_dir, tuple( [], false ) )
-    }
+    annotation_results = ANNOTATION( metadata_ch, params.skip_eggnog )
 
     pangenome_results = PANGENOME(
-        all_gffs,
-        prokka_results.gff,
+        annotation_results.all_gffs,
+        annotation_results.sample_gff,
         Channel.fromPath( params.plots_metadata ),
         params.outdir
     )
@@ -40,14 +27,5 @@ workflow {
     PHYLOGENETIC_TREE(
         pangenome_results.panaroo_aln,
         Channel.fromPath( params.plots_metadata )
-    )
-
-    abricate_results = ABRICATE_RUN( metadata_ch, [] )
-    abricate_summary = ABRICATE_SUMMARY( 
-        abricate_results
-            .map{ meta, abricate -> 
-                def newMeta = meta - meta.subMap(["id"])
-                tuple(newMeta, abricate)
-        }.groupTuple()
     )
 }
