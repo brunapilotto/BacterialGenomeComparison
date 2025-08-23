@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 
 library(ggnewscale)
+library(ggtree)
 
 args <- commandArgs(trailingOnly = TRUE)
 abricateSummary <- args[1]

@@ -4,4 +4,5 @@ channels:
   - defaults
 dependencies:
   - r-base=4.4.0
+  - bioconda::bioconductor-ggtree=3.14.0
   - r-ggnewscale=0.5.2
