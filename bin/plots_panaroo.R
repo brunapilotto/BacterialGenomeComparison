@@ -42,7 +42,7 @@ png(filename = "rarefaction_curve_panaroo.png", width = 6, height = 4, units = "
 plot(rf, ci.type = "poly", col = "darkblue", lwd = 2, ci.lty = 0, ci.col = "lightblue3",
            xlab = "Number of genomes",
            ylab = "Number of gene families",
-           ylim = c(4000, 6000))
+    )
 legend(x = "bottomright", legend = paste("\u03B1 =", round(heap[2], 2)), fill = "blue")
 dev.off()
 
@@ -54,7 +54,7 @@ dev.off()
 pange <- as.matrix(df_t, as.numeric)
 rownames(pange) <- colnames(data)
 
-png(filename = "heatmap_panaroo.png", width = 6, height = 4, units = "in", res = 300)
+pdf(file = "heatmap_panaroo.pdf", width = 10, height = 4, units = "in")
 hm <- pheatmap(pange, clustering_distance_rows = "manhattan",
             clustering_method = "ward.D", color = c("white", "skyblue4"),
             clustering_distance_cols = "manhattan", show_colnames = F,
