@@ -2,6 +2,7 @@ include { PROKKA } from '../../../modules/nf-core/prokka/main.nf'
 include { EGGNOGMAPPER } from '../../../modules/nf-core/eggnogmapper/main.nf'
 include { ABRICATE_RUN } from '../../../modules/nf-core/abricate/run/main.nf'
 include { ABRICATE_SUMMARY } from '../../../modules/nf-core/abricate/summary/main.nf'
+include { VIRSORTER } from '../../../modules/local/virsorter/main.nf'
 
 workflow ANNOTATION {
     take:
@@ -28,6 +29,8 @@ workflow ANNOTATION {
                 tuple(newMeta, abricate)
         }.groupTuple()
     )
+
+    VIRSORTER( samples )
 
     emit:
     all_gffs
