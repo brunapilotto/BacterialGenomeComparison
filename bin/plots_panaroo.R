@@ -54,7 +54,7 @@ dev.off()
 pange <- as.matrix(df_t, as.numeric)
 rownames(pange) <- colnames(data)
 
-pdf(file = "heatmap_panaroo.pdf", width = 10, height = 4, units = "in")
+pdf(file = "heatmap_panaroo.pdf", width = 10, height = 4)
 hm <- pheatmap(pange, clustering_distance_rows = "manhattan",
             clustering_method = "ward.D", color = c("white", "skyblue4"),
             clustering_distance_cols = "manhattan", show_colnames = F,
