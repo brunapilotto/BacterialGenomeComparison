@@ -26,6 +26,7 @@ workflow {
 
     PHYLOGENETIC_TREE(
         pangenome_results.panaroo_aln,
+        annotation_results.abricate_summary,
         Channel.fromPath( params.plots_metadata )
     )
 }

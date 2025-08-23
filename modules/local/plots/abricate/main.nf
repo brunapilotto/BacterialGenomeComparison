@@ -4,6 +4,8 @@ process PLOTS_ABRICATE {
 
     input:
     tuple val(meta), path(summary)
+    tuple val(meta), path(tree_file)
+    path metadata 
 
     output:
     tuple val(meta), path("*.png"), emit: plots
@@ -11,7 +13,7 @@ process PLOTS_ABRICATE {
 
     script:
     """
-    plot_abricate.R ${summary}
+    plot_abricate.R ${summary} ${tree_file} ${metadata}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
