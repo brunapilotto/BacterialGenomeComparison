@@ -13,6 +13,7 @@ process VIRSORTER {
     script:
         def args = task.ext.args ?: ''
         """
+        virsorter setup -d db -j ${task.cpus}
         virsorter run -w ${meta.id} -i ${fasta} -j ${task.cpus} $args
 
         cat <<-END_VERSIONS > versions.yml
