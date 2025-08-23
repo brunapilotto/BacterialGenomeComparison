@@ -1,6 +1,7 @@
 include { PROKKA } from './modules/nf-core/prokka/main.nf'
 include { EGGNOGMAPPER } from './modules/nf-core/eggnogmapper/main.nf'
 include { ABRICATE_RUN } from './modules/nf-core/abricate/run/main.nf'
+include { ABRICATE_SUMMARY } from './modules/nf-core/abricate/summary/main.nf'
 
 include { PANGENOME } from './subworkflows/local/pangenome/main.nf'
 include { PHYLOGENETIC_TREE } from './subworkflows/local/phylogenetic_tree/main.nf'
@@ -42,4 +43,11 @@ workflow {
     )
 
     abricate_results = ABRICATE_RUN( metadata_ch, [] )
+    abricate_summary = ABRICATE_SUMMARY( 
+        abricate_results
+            .map{ meta, abricate -> 
+                def newMeta = meta - meta.subMap(["id"])
+                tuple(newMeta, abricate)
+        }.groupTuple()
+    )
 }
