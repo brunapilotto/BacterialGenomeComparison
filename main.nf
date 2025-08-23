@@ -31,7 +31,7 @@ workflow {
         eggnog_results = EGGNOGMAPPER( prokka_results.faa, false, params.eggnog_data_dir, tuple( [], false ) )
     }
 
-    PANGENOME(
+    pangenome_results = PANGENOME(
         all_gffs,
         prokka_results.gff,
         Channel.fromPath( params.plots_metadata ),
@@ -39,7 +39,7 @@ workflow {
     )
 
     gubbins_results = GUBBINS( 
-                        panaroo_results.aln.map { _meta, geneAlignment -> geneAlignment }
+                        pangenome_results.panaroo_aln.map { _meta, geneAlignment -> geneAlignment }
                     )
     clean_aln = SNPSITES( gubbins_results.fasta )
     tree = IQTREE(

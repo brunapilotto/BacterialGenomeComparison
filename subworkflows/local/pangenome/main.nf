@@ -18,10 +18,13 @@ workflow PANGENOME {
             .map { meta, results -> 
                     def resultsDir = file(results[0]).getParent()
                     tuple( meta, file("${resultsDir}/gene_presence_absence.Rtab") ) },
-        Channel.fromPath( plots_metadata )
+        plots_metadata
     )
 
     sample_tab = PPANGGOLIN_SAMPLE_TAB( sample_gff, outdir )
     input_ppanggolin = PPANGGOLIN_JOIN_TAB( sample_tab.collect() )
     ppanggolin_results = PPANGGOLIN_RUN( input_ppanggolin )
+
+    emit:
+    panaroo_aln = panaroo_results.aln
 }
