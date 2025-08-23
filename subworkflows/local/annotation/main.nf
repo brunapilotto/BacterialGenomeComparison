@@ -22,7 +22,7 @@ workflow ANNOTATION {
 
     abricate_results = ABRICATE_RUN( samples, [] )
     abricate_summary = ABRICATE_SUMMARY( 
-        abricate_results
+        abricate_results.report
             .map{ meta, abricate -> 
                 def newMeta = meta - meta.subMap(["id"])
                 tuple(newMeta, abricate)
