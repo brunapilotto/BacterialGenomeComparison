@@ -12,7 +12,7 @@ tree <- read.tree(treeFile)
 treeMP<-midpoint(tree)
 meta <- read.table(metadata, header = T, sep = "\t")
 
-png(filename = "tree_plot.png", width = 6, height = 4, units = "in", res = 300)
+png(filename = "tree_plot.png", width = 10, height = 4, units = "in", res = 300)
 gg <- ggtree(treeMP, layout= "rectangular", right=F) +
   geom_tiplab(size=2.8, linesize=.5,offset = 0.0003,align = T) +
   geom_text2(aes(subset = !isTip, label=label), size = 2,
