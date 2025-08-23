@@ -1,5 +1,6 @@
 include { PROKKA } from './modules/nf-core/prokka/main.nf'
 include { EGGNOGMAPPER } from './modules/nf-core/eggnogmapper/main.nf'
+include { ABRICATE_RUN } from './modules/nf-core/abricate/run/main.nf'
 
 include { PANGENOME } from './subworkflows/local/pangenome/main.nf'
 include { PHYLOGENETIC_TREE } from './subworkflows/local/phylogenetic_tree/main.nf'
@@ -39,4 +40,6 @@ workflow {
         pangenome_results.panaroo_aln,
         Channel.fromPath( params.plots_metadata )
     )
+
+    abricate_results = ABRICATE_RUN( metadata_ch, [] )
 }
