@@ -14,14 +14,16 @@ tree <- read.tree(treeFile)
 treeMP <- midpoint(tree)
 meta <- read.table(metadata, header = TRUE, sep = "\t")
 df1 <- read.table(abricateSummary, sep = "\t", header = TRUE,
-                    check.names = FALSE, row.names = 1
-                )
-df2 <- df1[,-1]
+                    check.names = FALSE, comment.char = "")
+names(df1)[1] <- gsub("^#", "", names(df1)[1])
+df1$FILE <- gsub("_resfinder\\.txt$", "", df1$FILE)
+rownames(df1) <- df1$FILE
+df2 <- df1[, !(names(df1) %in% c("FILE", "NUM_FOUND"))]
 
 df2[df2 >= 90] <- 'Present'
 df2[df2 < 90] <- 'Absent'
 
-png(filename = "abricate_heatmap.png", width = 10, height = 10, units = "in", res = 300)
+png(filename = "abricate_heatmap.png", width = 15, height = 10, units = "in", res = 300)
 gg <- ggtree(treeMP, layout= "rectangular", right=F) +
                 geom_tiplab(size=2.8, linesize=.5,offset = 0.0003,align = T) +
                 geom_text2(aes(subset = !isTip, label=label), size = 2,
@@ -37,7 +39,7 @@ p2 <- p1 + geom_tippoint(aes(fill=Host, shape=Host),
 p3 <- p2 + new_scale_fill()
 gheatmap(p3, df2, width = 1.2, font.size = 2.8,
             color ="black", colnames_offset_y = -0.4, colnames_position =
-            "top", offset = 0.0012, hjust = 0, colnames_angle = 90) +
+            "top", offset = 0.0015, hjust = 0, colnames_angle = 90) +
             scale_fill_manual(breaks = c("Present", "Absent"),
                             values = c("#6da3a3", "gray95"),
                             name = "Plasmid replicon") +
